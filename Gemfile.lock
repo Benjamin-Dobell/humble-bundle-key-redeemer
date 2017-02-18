@@ -1,0 +1,19 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    fuzzy_match (2.1.0)
+    mini_portile2 (2.1.0)
+    nokogiri (1.7.0.1)
+      mini_portile2 (~> 2.1.0)
+    rb-scpt (1.0.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  fuzzy_match
+  nokogiri
+  rb-scpt
+
+BUNDLED WITH
+   1.13.7
