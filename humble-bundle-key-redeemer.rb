@@ -18,10 +18,22 @@ def activate_keys
 
   return unless keys.length > 0
 
-  button = display_dialog("Steam only allows 25 key activations an hours, and much less if you enter a key for a Steam item you already own!\n\nCross-reference keys against Steam items you've already licensed?",
-    buttons: ['No', 'Yes'], default_button: 2)[:button_returned]
+  licensed_items = []
 
-  licensed_items = button == 'Yes' ? read_licensed_items : []
+  message =  "Steam only allows 25 key activations an hours, and much less if you enter a key for a Steam item you already own!\n\nCross-reference keys against Steam items you've already licensed?"
+
+  if display_dialog(message, buttons: ['No', 'Yes'], default_button: 2)[:button_returned] == 'Yes'
+    loop do
+      licensed_items = read_licensed_items
+
+      break if licensed_items.length > 0
+
+      button = display_dialog('Could not find any licensed items.', buttons: ['Quit', 'Continue anyway', 'Try again'], default_button: 3)[:button_returned]
+
+      return if button == 'Quit'
+      break if button == 'Continue anyway'
+    end
+  end
 
   previously_unredeemed_keys = parse_key_file UNREDEEMED_KEYS_PATH
   previously_redeemed_keys = parse_key_file REDEEMED_KEYS_PATH
@@ -154,6 +166,9 @@ def activate_keys
     else
       failed_keys[key] = title
 
+      message = "Failed to redeem #{title} with #{key}\n\nPlease read the information in Steam, and decide whether or not you'd like to continue (by skipping this key)."
+      return if display_dialog(message, buttons: ['Quit', 'Continue'], default_button: 2)[:button_returned] != 'Continue'
+
       unless previously_failed_keys[key]
         File.open(FAILED_KEYS_PATH, 'a+') do |file|
           file.puts "#{key} - #{title}"
@@ -233,7 +248,7 @@ def redeem_key(key)
   system_events.keystroke "\r"
   big_delay
 
-  loop do
+  5.times do
     window_names = steam_process.windows.get.map { |w| w.name.get.to_s }
 
     if window_names.detect { |n| n.start_with?('Steam') && n.include?('Error') }
@@ -250,11 +265,11 @@ def redeem_key(key)
       system_events.keystroke "\r"
       small_delay
     else
-      break
+      return true
     end
   end
 
-  true
+  false
 end
 
 def overwrite_keys_file(path, keys)
@@ -330,14 +345,13 @@ def read_licensed_items
     break if browser_contents_loaded?
   end
 
-  sleep 0.25
+  sleep 1.5
 
   items = browser_contents.xpath("//table[@class='account_table']//tr[./td[@class='license_acquisition_col']]").map { |node|
     node.xpath('.//a').remove
     node.xpath('./td')[1].inner_text.strip
   }
 
-  display_dialog('Could not find any licensed items.', buttons: ['OK'], default_button: 1) if items.length == 0
   system_events.keystroke('w', {:using => :'command_down'})
 
   items
