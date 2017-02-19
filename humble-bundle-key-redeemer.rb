@@ -20,7 +20,7 @@ def activate_keys
 
   licensed_items = []
 
-  message =  "Steam only allows 25 key activations an hours, and much less if you enter a key for a Steam item you already own!\n\nCross-reference keys against Steam items you've already licensed?"
+  message =  "Steam will lock you out from redeeming keys if you enter too many keys for a Steam items you already own!\n\nCross-reference keys against Steam items you've already licensed?"
 
   if display_dialog(message, buttons: ['No', 'Yes'], default_button: 2)[:button_returned] == 'Yes'
     loop do

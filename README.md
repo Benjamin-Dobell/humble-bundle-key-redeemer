@@ -14,10 +14,10 @@ However, what sets this project apart from similar projects is that we do our be
 
 Basically Steam only allows a certain number of key redemption _attempts_ per hour, this is designed to stop people brute-force guessing Steam keys.
 
-You're only allowed around 25 key redemption attempts each hour. That isn't a lot if you've purchased a few Humble Bundles. However, it's a real issue if your key redemption attempts fail, Steam will lock you out much quicker. That doesn't seem unreasonable, however Steam considers two common scenarios as failures:
+Steam only allows you to attempt to redeem a certain number of keys each hour. However, Steam locks you out much quicker if your key redemption attempts fail. That doesn't seem unreasonable, however Steam considers two common scenarios as failures:
 
  1. Accidentally attempting to redeem a key you've already redeemed.
- 2. Redeem a key that has never before been redeemed, _but_ is for a game you already own.
+ 2. Redeeming a key that has never before been redeemed, _but_ is for a game you already own.
 
 The former is annoying, but the latter is a real issue, particularly with Humble Bundles, as it's fairly common for the one game to appear in multiple bundles.
 
