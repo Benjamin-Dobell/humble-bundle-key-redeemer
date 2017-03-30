@@ -211,7 +211,7 @@ def redeem_key(key)
   steam_application.activate
   steam_process = system_events.processes['Steam'].get
 
-  small_delay
+  sleep 0.5
 
   # Close open windows
 
@@ -219,34 +219,35 @@ def redeem_key(key)
     window_count = steam_process.windows.get.length
     system_events.keystroke('w', {:using => :'command_down'})
     sleep 1
+
     break if window_count == steam_process.windows.get.length
   end
 
   # Activation process
 
   osax.set_the_clipboard_to key
-  small_delay
+  sleep 0.5
 
   steam_process.menu_bars[1].menu_bar_items['Games'].menus.menu_items['Activate a Product on Steam...'].click
-  big_delay
+  sleep 2
 
   2.times do
     system_events.keystroke "\r"
-    small_delay
+    sleep 0.5
   end
 
   # Steam are doing their own modifier key tracking, we have to first press command, then tap v
   system_events.key_down :command
-  small_delay
+  sleep 0.5
 
   system_events.keystroke 'v'
-  small_delay
+  sleep 0.5
 
   system_events.key_up :command
-  small_delay
+  sleep 0.5
 
   system_events.keystroke "\r"
-  big_delay
+  sleep 2
 
   5.times do
     window_names = steam_process.windows.get.map { |w| w.name.get.to_s }
@@ -255,15 +256,15 @@ def redeem_key(key)
       return false
     elsif window_names.detect { |n| n == 'Product Activation'}
       system_events.keystroke "\r"
-      small_delay
+      sleep 0.5
     elsif window_names.detect { |n| n.start_with? 'Install' }
       2.times do
         system_events.keystroke "\t"
-        small_delay
+        sleep 0.5
       end
 
       system_events.keystroke "\r"
-      small_delay
+      sleep 0.5
     else
       return true
     end
@@ -319,16 +320,24 @@ def open_browser_tab(url)
   browser.activate
   osax.set_the_clipboard_to url
   system_events.processes[browser_name].menu_bars[1].menu_bar_items['File'].menus.menu_items['New Tab'].click
-  big_delay
+  sleep 2
+
   system_events.keystroke('v', {:using => :'command_down'})
-  small_delay
+  sleep 0.5
+
   system_events.keystroke("\r")
+  sleep 0.5
 end
 
 def read_licensed_items
   open_browser_tab 'https://store.steampowered.com/account/licenses/'
 
   loop do
+    10.times do
+      sleep 1
+      break if browser_contents_loaded?
+    end
+
     break if browser_contents.xpath("//*[@class='loginbox']").length == 0
 
     button = display_dialog("Looks like you haven't logged into Steam from your browser.\n\nYou can either login then press 'Continue', or 'Skip', which will proceed without taking into account items you've already licensed.",
@@ -470,14 +479,6 @@ end
 def display_dialog(*args)
   osax.activate
   osax.display_dialog *args
-end
-
-def big_delay
-  sleep 2
-end
-
-def small_delay
-  sleep 0.5
 end
 
 # Do it
