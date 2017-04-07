@@ -301,7 +301,7 @@ end
 
 def validate_browser
   if browser.nil?
-    button = display_dialog("Hmm, it doesn't look like Chrome or Safari are running. Please launch one.",
+    button = display_dialog("Hmm, it doesn't look like Safari is running. Please launch it.",
       buttons: ['Quit', 'Try again'],
       default_button: 2)[:button_returned]
 
@@ -419,23 +419,11 @@ def browser_contents
 end
 
 def browser_contents_loaded?
-  if browser_name == "Safari" then
-    browser.documents[1].source.get.length != 0
-  elsif browser_name == 'Google Chrome' then
-    browser.windows[1].active_tab.execute(javascript: 'document.readyState') == 'complete'
-  else
-    ''
-  end
+  browser.documents[1].source.get.length != 0
 end
 
 def browser_html
-  if browser_name == "Safari" then
-    browser.documents[1].source.get rescue ''
-  elsif browser_name == 'Google Chrome' then
-    browser.windows[1].active_tab.execute(javascript: 'document.body.innerHTML') rescue ''
-  else
-    ''
-  end
+  browser.documents[1].source.get rescue ''
 end
 
 def browser_name
@@ -444,22 +432,7 @@ end
 
 def browser
   @browser ||= begin
-    available_browsers = ['Safari', 'Google Chrome']
-    default_browser_name = default_browser.name.get rescue nil
-
-    if application_is_running?(default_browser_name) and available_browsers.include?(default_browser_name)
-      default_browser
-    else
-      running_browsers = available_browsers.select { |browser| application_is_running? browser }
-
-      if running_browsers.length == 0
-        app "Safari"
-      elsif running_browsers.length == 1
-        app running_browsers[0]
-      else
-        app display_dialog('Which browser do you want to use?', buttons: ['Cancel'].concat(running_browsers), default_button: 2)[:button_returned]
-      end
-    end
+    app "Safari"
   end
 end
 
