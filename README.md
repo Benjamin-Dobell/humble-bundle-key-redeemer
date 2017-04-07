@@ -31,7 +31,7 @@ Secondly, by looking at your Steam accounts list of activations, and cross-refer
 
 ## How does it work?
 
-We presently require that you use OS X, and that you use either Chrome of Safari.
+We presently require that you use OS X, and Safari as your browser.
 
 You navigate to a Humble Bundle page with some keys visible that you'd like activated. Then you run the Humble Bundle Key Activator. It'll automatically detect your browser and find the Humble Bundle keys visible in your active tab. Then as described above, we automatically cross-reference these keys/titles against titles you already own - you'll be prompted to login to Steam via your browser if you aren't already.
 
@@ -62,9 +62,44 @@ gem install bundler
 bundle install
 ```
 
+### Allow us to read your browser contents
+
+We need to be able to read the contents of your browser window.
+
+First, if you haven't already, enable the Develop menu in Safari:
+
+1. In the menu bar, select "Safari" -> "Preferences"
+2. Click on the “Advanced” tab
+3. Enable the checkbox “Show Develop menu in menu bar”
+4. Close the Preferences window
+
+Now, enable JavaScript access AppleScript:
+
+1. From the menu bar, select "Develop" -> "Enable JavaScript from Apple Events"
+
+*__Note:__ You will be prompted when an application tries to execute JavaScript in your browser. However, if you're particularly security conscious, you can turn this feature off whenever you're not using the Humble Bundle Key Redeemer.*
+
+### Allow our script to interact with other applications
+
+The terminal (where this Ruby script will be run) needs to be able to use AppleScript to interact with other applications on your computer (Steam and your browser). This is achieved using the accessibility APIs built into macOS.
+
+To give terminal access to the accessibility APIs please do the following:
+
+1. Launch macOS "System Preferences"
+2. Select "Security and Privacy"
+3. Select the "Privacy" tab.
+4. Click the lock icon bottom left to make changes (you'll be prompted for your password).
+5. Select "Accessibility" in the left pane.
+6. In the right pane, enable the checkbox next to "Terminal.app"
+
+*__Note:__ Feel free to disable this when you're not using Humble Bundle Key Redeemer.*
+
 ### Run the script
+
+From terminal, navigate to Humble Bundle Key Redeemer's directory, then execute:
 
 ```
 ./humble-bundle-key-redeemer.rb
 ```
 
+You'll receive prompts along the way guiding you through the process.

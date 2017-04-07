@@ -419,11 +419,11 @@ def browser_contents
 end
 
 def browser_contents_loaded?
-  browser.documents[1].source.get.length != 0
+  browser.documents[1].do_JavaScript('document.readyState') == 'complete'
 end
 
 def browser_html
-  browser.documents[1].source.get rescue ''
+  browser.documents[1].do_JavaScript('document.body.innerHTML') rescue ''
 end
 
 def browser_name
