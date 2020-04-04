@@ -375,7 +375,7 @@ def read_keys
       node.xpath(".//*[@class='sr-key-heading']").first.inner_text.strip
     ] if node.xpath(".//*[@class='sr-redeemed']").first && node.xpath(".//*[@class='sr-key-heading']").first
   }.compact.concat(contents.xpath("//*[./*[@class='game-name'] and .//*[contains(@class, 'redeemed')]]").map { |node|
-    redeem_text = node.xpath(".//*[contains(@class, 'redeemed')]").first.inner_text.strip
+    redeem_text = node.xpath(".//*[contains(@class, 'keyfield-value')]").inner_text.strip
 
     if redeem_text.match "[A-Z0-9]+(?:-[A-Z0-9]+)+"
       [
