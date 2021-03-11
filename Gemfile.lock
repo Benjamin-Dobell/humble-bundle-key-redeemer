@@ -2,9 +2,11 @@ GEM
   remote: https://rubygems.org/
   specs:
     fuzzy_match (2.1.0)
-    mini_portile2 (2.1.0)
-    nokogiri (1.7.0.1)
-      mini_portile2 (~> 2.1.0)
+    mini_portile2 (2.5.0)
+    nokogiri (1.11.0)
+      mini_portile2 (~> 2.5.0)
+      racc (~> 1.4)
+    racc (1.5.2)
     rb-scpt (1.0.1)
 
 PLATFORMS
